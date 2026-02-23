@@ -19,7 +19,7 @@ A high-performance, lightweight Speech-to-Text API built for Apple Silicon Mac (
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/wagyufari/simple-stt.git
 cd simple-stt
 
 # Create a virtual environment
@@ -47,4 +47,4 @@ nohup ./venv/bin/python main.py > api.log 2>&1 &
 ## 📖 API Documentation
 
 Detailed endpoint documentation can be found in [API.md](./API.md).
-# simple-stt
+
