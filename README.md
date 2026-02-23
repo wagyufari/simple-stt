@@ -28,6 +28,9 @@ source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Download the Whisper model
+python download_model.py
 ```
 
 ### 3. Running the Server
