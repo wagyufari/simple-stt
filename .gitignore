@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Models (Hugging Face Cache)
+models/
+
+# Logs
+*.log
+nohup.out
