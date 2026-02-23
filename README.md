@@ -47,3 +47,4 @@ nohup ./venv/bin/python main.py > api.log 2>&1 &
 ## 📖 API Documentation
 
 Detailed endpoint documentation can be found in [API.md](./API.md).
+# simple-stt
