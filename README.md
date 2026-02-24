@@ -17,7 +17,14 @@ A high-performance, lightweight Speech-to-Text API built for Apple Silicon Mac (
 
 ### 2. Installation
 
+The easiest way to set everything up (including FFmpeg) is to run the setup script:
+
 ```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+Alternatively, you can do it manually:
 # Clone the repository
 git clone https://github.com/wagyufari/simple-stt.git
 cd simple-stt

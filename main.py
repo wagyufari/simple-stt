@@ -12,6 +12,20 @@ os.environ["HF_HOME"] = os.path.join(BASE_DIR, "models")
 import mlx_whisper
 
 from contextlib import asynccontextmanager
+import shutil
+import platform
+
+# Check if ffmpeg is installed
+if not shutil.which("ffmpeg"):
+    # Common Homebrew path on Apple Silicon
+    brew_ffmpeg_path = "/opt/homebrew/bin"
+    if platform.system() == "Darwin" and os.path.exists(os.path.join(brew_ffmpeg_path, "ffmpeg")):
+        os.environ["PATH"] += os.pathsep + brew_ffmpeg_path
+        print(f"ℹ️ Added {brew_ffmpeg_path} to PATH to find ffmpeg.")
+    else:
+        print("❌ ERROR: 'ffmpeg' not found in PATH.")
+        print("Please install FFmpeg to use this API:")
+        print("  brew install ffmpeg")
 
 MODEL_NAME = "mlx-community/whisper-large-v3-turbo"
 
