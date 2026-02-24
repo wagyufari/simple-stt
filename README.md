@@ -1,60 +1,99 @@
 # 🎙️ Simple STT (MLX Whisper)
 
-A high-performance, lightweight Speech-to-Text API built for Apple Silicon Mac (M-series). It utilizes `mlx-whisper` and FastAPI to provide rapid audio transcription with hardware acceleration.
+[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
+[![Platform](https://img.shields.io/badge/Platform-macOS%20(Apple%20Silicon)-lightgrey.svg)](https://developer.apple.com/apple-silicon/)
+[![Engine](https://img.shields.io/badge/Engine-MLX%20Whisper-orange.svg)](https://github.com/ml-explore/mlx-whisper)
 
-## ✨ Features
+A high-performance, lightweight **Speech-to-Text API** specifically engineered for **Apple Silicon Macs** (M1, M2, M3, M4). By leveraging the [MLX framework](https://github.com/ml-explore/mlx), this project provides near-instant audio transcription with full hardware acceleration and minimal memory footprint.
 
-- **Apple Silicon Optimized**: Uses the MLX framework for maximum performance on M1/M2/M3/M4 chips.
-- **Turbo Speed**: Uses the `large-v3-turbo` model for a great balance of accuracy and speed.
-- **Self-Contained**: Automatically downloads and stores models inside the project directory.
+---
 
-## 🚀 Quick Start
+## ✨ Key Features
 
-### 1. Prerequisites
+- 🍎 **Apple Silicon Optimized**: Fully utilizes the GPU/Neural Engine via the MLX framework for maximum throughput.
+- ⚡ **Turbo Performance**: Defaults to the `whisper-large-v3-turbo` model for a perfect balance of speed and accuracy.
+- 🛠️ **Developer Friendly**: Simple REST API built with FastAPI, making it easy to integrate into any application.
+- 📦 **Zero-Configuration Model Management**: Automatically downloads and manages models locally within the project directory.
+- 🔇 **Privacy Focused**: Runs 100% locally on your machine. No data ever leaves your computer.
 
-- **Python 3.10+**
-- **FFmpeg** (Required for audio processing): `brew install ffmpeg`
+---
 
-### 2. Installation
+## 🚀 Getting Started
 
-The easiest way to set everything up (including FFmpeg) is to run the setup script:
+### Initial Setup
+
+Copy and paste the following block to install dependencies and prepare the environment:
 
 ```bash
+# 1. Install FFmpeg (Homebrew required)
+brew install ffmpeg
+
+# 2. Clone the repository
+git clone https://github.com/wagyufari/simple-stt.git
+cd simple-stt
+
+# 3. Setup Virtual Environment & Install Dependencies
 chmod +x setup.sh
 ./setup.sh
 ```
 
-Alternatively, you can do it manually:
-# Clone the repository
-git clone https://github.com/wagyufari/simple-stt.git
-cd simple-stt
+---
 
-# Create a virtual environment
-python3 -m venv venv
-source venv/bin/activate
+## 🏃 Running the Server
 
-# Install dependencies
-pip install -r requirements.txt
-
-# Download the Whisper model
-python download_model.py
-```
-
-### 3. Running the Server
-
-**Standard Start:**
-
+### Standard Mode
+Runs the server in the foreground on `http://localhost:6684`.
 ```bash
 python main.py
 ```
 
-**Background Start:**
-
+### Background Mode (Recommended for production)
+Runs the server in the background and logs to `api.log`.
 ```bash
 nohup ./venv/bin/python main.py > api.log 2>&1 &
 ```
 
-## 📖 API Documentation
+---
 
-Detailed endpoint documentation can be found in [API.md](./API.md).
+## 📖 API Usage
+
+The server exposes a `/transcribe` endpoint that accepts base64-encoded audio.
+
+### Example Request (cURL)
+
+```bash
+curl -X POST http://localhost:6684/transcribe \
+     -H "Content-Type: application/json" \
+     -d '{
+       "audio_base64": "'"$(base64 -i your_audio.wav)"'",
+       "language": "en"
+     }'
+```
+
+For detailed documentation on all endpoints and response formats, see [**API.md**](./API.md) or visit the interactive documentation at `http://localhost:6684/docs` when the server is running.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [FastAPI](https://fastapi.tiangolo.com/)
+- **ML Engine**: [MLX Whisper](https://github.com/ml-explore/mlx-whisper)
+- **Audio Processing**: [FFmpeg](https://ffmpeg.org/)
+- **Schema Validation**: [Pydantic](https://docs.pydantic.dev/)
+
+---
+
+## 📁 Project Structure
+
+- `main.py`: The core FastAPI application and transcription logic.
+- `setup.sh`: Automated environment setup script.
+- `download_model.py`: Utility to pre-download models from Hugging Face.
+- `API.md`: Detailed API endpoint documentation.
+- `models/`: (Generated) Local storage for downloaded MLX models.
+
+---
+
+## 📝 License
+
+This project is open-source and available under the MIT License.
 
