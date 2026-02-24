@@ -3,17 +3,13 @@ import base64
 import tempfile
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-
-# Redirect Hugging Face cache to the project directory
-# This ensures the model is saved here and not in ~/.cache
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-os.environ["HF_HOME"] = os.path.join(BASE_DIR, "models")
-
-import mlx_whisper
-
-from contextlib import asynccontextmanager
 import shutil
 import platform
+from contextlib import asynccontextmanager
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+import mlx_whisper
 
 # Check if ffmpeg is installed
 if not shutil.which("ffmpeg"):
@@ -28,10 +24,14 @@ if not shutil.which("ffmpeg"):
         print("  brew install ffmpeg")
 
 MODEL_NAME = "mlx-community/whisper-large-v3-turbo"
+MODEL_DIR = os.path.join(BASE_DIR, "models", "whisper-large-v3-turbo")
+
+# Use local model dir if available, otherwise fallback to repo name
+MODEL_PATH = MODEL_DIR if os.path.exists(MODEL_DIR) else MODEL_NAME
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print(f"Pre-caching model: {MODEL_NAME}...")
+    print(f"Pre-caching model: {MODEL_PATH}...")
     # This will trigger a download if not already cached and load it into MLX memory
     # A dummy inference run can be slow the very first time on MLX since it compiles the computational graph!
     yield
@@ -67,7 +67,7 @@ async def transcribe(req: AudioRequest):
         # Run transcription via MLX
         result = mlx_whisper.transcribe(
             tmp_path,
-            path_or_hf_repo=MODEL_NAME,
+            path_or_hf_repo=MODEL_PATH,
             **kwargs
         )
         
@@ -87,7 +87,7 @@ async def health_check():
     return {
         "status": "ok",
         "engine": "mlx-whisper",
-        "model": MODEL_NAME
+        "model": MODEL_PATH
     }
 
 if __name__ == "__main__":
