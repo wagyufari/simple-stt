@@ -22,7 +22,7 @@ A high-performance, lightweight **Speech-to-Text API** specifically engineered f
 
 ### Initial Setup
 
-Copy and paste the following block to install dependencies and prepare the environment:
+Copy and paste the following block to install dependencies, set up the environment, and download the model:
 
 ```bash
 # 1. Install FFmpeg (Homebrew required)
@@ -32,9 +32,15 @@ brew install ffmpeg
 git clone https://github.com/wagyufari/simple-stt.git
 cd simple-stt
 
-# 3. Setup Virtual Environment & Install Dependencies
-chmod +x setup.sh
-./setup.sh
+# 3. Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# 4. Install requirements
+pip install -r requirements.txt
+
+# 5. Download the Whisper model
+python download_model.py
 ```
 
 ---
